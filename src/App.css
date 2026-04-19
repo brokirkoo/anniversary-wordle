@@ -200,3 +200,148 @@
   .key { height: 46px; }
   .keyboard-row { margin-bottom: 6px; }
 }
+/* ── Lobby screen ── */
+.lobby {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+}
+
+.lobby-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.lobby-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #d3d6da;
+  animation: lobby-pulse 1.2s ease-in-out infinite;
+}
+
+.lobby-dots span:nth-child(2) { animation-delay: 0.2s; }
+.lobby-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes lobby-pulse {
+  0%, 80%, 100% { background: #d3d6da; transform: scale(1); }
+  40%            { background: #878a8c; transform: scale(1.3); }
+}
+
+.lobby-message {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #1a1a1b;
+  margin: 0;
+}
+
+.lobby-hint {
+  font-size: 0.8rem;
+  color: #787c7e;
+  margin: 0;
+}
+
+/* ── Share button ── */
+.share-btn {
+  margin-top: 4px;
+  padding: 10px 28px;
+  border-radius: 4px;
+  border: none;
+  background: #6aaa64;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.share-btn:active { transform: scale(0.96); }
+
+.share-btn:hover {
+  background: #538d4e;
+}
+
+/* ── Grid wrapper (needed for the waiting overlay) ── */
+.grid-wrapper {
+  position: relative;
+}
+
+/* Pending tile: letters locked in, no colour yet */
+.tile.pending {
+  border-color: #878a8c;
+}
+
+/* Waiting overlay: frosted glass over the grid */
+.waiting-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border-radius: 4px;
+  z-index: 10;
+}
+
+.waiting-overlay p {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #1a1a1b;
+}
+
+/* Partner pending dot: submitted but not yet revealed */
+.partner-tile.pending {
+  background: #878a8c;
+  opacity: 0.35;
+}
+
+/* ── Partner board ── */
+.partner-board {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.partner-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #787c7e;
+  margin: 0 0 6px;
+}
+
+.partner-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+}
+
+.partner-row {
+  display: flex;
+  gap: 3px;
+}
+
+.partner-tile {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  background: #d3d6da;
+}
+
+.partner-tile.correct { background: #6aaa64; }
+.partner-tile.present { background: #c9b458; }
+.partner-tile.absent  { background: #787c7e; }
