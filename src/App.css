@@ -1,3 +1,21 @@
+/* ── Color tokens ──────────────────────────────────────────────────────────── */
+:root {
+  --bg:            #121213;
+  --text:          #ffffff;
+  --border-empty:  #3a3a3c;
+  --border-filled: #565758;
+  --key-bg:        #818384;
+  --key-text:      #ffffff;
+  --correct:       #538d4e;
+  --present:       #b59f3b;
+  --absent:        #3a3a3c;
+  --muted:         #818384;
+  --overlay-bg:    rgba(18, 18, 19, 0.88);
+
+  /* Fluid tile sizing — updated at each keyboard/header breakpoint */
+  --tile-overhead: 404px;
+}
+
 /* ── App shell: fills viewport, no scroll ── */
 .app {
   height: 100vh;
@@ -9,14 +27,14 @@
   max-width: 500px;
   margin: 0 auto;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  background: #fff;
-  color: #1a1a1b;
+  background: var(--bg);
+  color: var(--text);
 }
 
 /* ── Header ── */
 .app-header {
   width: 100%;
-  border-bottom: 1px solid #d3d6da;
+  border-bottom: 1px solid var(--border-empty);
   text-align: center;
   padding: 10px 0 7px;
   flex-shrink: 0;
@@ -32,7 +50,7 @@
 
 .subtitle {
   font-size: 0.7rem;
-  color: #787c7e;
+  color: var(--muted);
   margin: 2px 0 0;
 }
 
@@ -77,13 +95,11 @@
  *   header 57 + keyboard 198 + board-padding 16 + board-gap 10 + partner-board 98 = 379px
  *   + 5 row-gaps of 5px = 25px  →  total constant: 404px
  */
-:root { --tile-overhead: 404px; }
-
 .tile {
   --s: clamp(38px, calc((100svh - var(--tile-overhead)) / 6), 62px);
   width: var(--s);
   height: var(--s);
-  border: 2px solid #d3d6da;
+  border: 2px solid var(--border-empty);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,37 +110,37 @@
 }
 
 .tile.filled {
-  border-color: #878a8c;
+  border-color: var(--border-filled);
   animation: pop 0.08s ease-in-out;
 }
 
 .tile.correct {
-  background: #6aaa64;
-  border-color: #6aaa64;
+  background: var(--correct);
+  border-color: var(--correct);
   color: #fff;
 }
 
 .tile.present {
-  background: #c9b458;
-  border-color: #c9b458;
+  background: var(--present);
+  border-color: var(--present);
   color: #fff;
 }
 
 .tile.absent {
-  background: #787c7e;
-  border-color: #787c7e;
+  background: var(--absent);
+  border-color: var(--absent);
   color: #fff;
 }
 
 /* ── Row shake (invalid word) ── */
 @keyframes shake {
-  0%        { transform: translateX(0); }
-  15%       { transform: translateX(-6px); }
-  35%       { transform: translateX(6px); }
-  55%       { transform: translateX(-4px); }
-  75%       { transform: translateX(4px); }
-  90%       { transform: translateX(-2px); }
-  100%      { transform: translateX(0); }
+  0%   { transform: translateX(0); }
+  15%  { transform: translateX(-6px); }
+  35%  { transform: translateX(6px); }
+  55%  { transform: translateX(-4px); }
+  75%  { transform: translateX(4px); }
+  90%  { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
 }
 
 .row.shake { animation: shake 0.55s ease-in-out; }
@@ -135,14 +151,14 @@
   font-weight: 700;
   letter-spacing: 0.04rem;
   text-align: center;
-  background: #1a1a1b;
-  color: #fff;
+  background: var(--text);
+  color: var(--bg);
   padding: 10px 16px;
   border-radius: 4px;
 }
 
-.message.error   { background: #c62828; }
-.message.invalid { background: #1a1a1b; }
+.message.error   { background: #c62828; color: #fff; }
+.message.invalid { background: var(--text); color: var(--bg); }
 
 /* ── Keyboard ── */
 .keyboard {
@@ -173,12 +189,12 @@
   width: calc((min(500px, 100vw) - 52px) / 10);
   height: 58px;
   border-radius: 4px;
-  background: #d3d6da;
+  background: var(--key-bg);
   border: none;
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
-  color: #1a1a1b;
+  color: var(--key-text);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -197,9 +213,9 @@
   letter-spacing: -0.3px;
 }
 
-.key.absent  { background: #787c7e; color: #fff; }
-.key.present { background: #c9b458; color: #fff; }
-.key.correct { background: #6aaa64; color: #fff; }
+.key.absent  { background: var(--absent);  color: #fff; }
+.key.present { background: var(--present); color: #fff; }
+.key.correct { background: var(--correct); color: #fff; }
 
 /* ── Responsive scaling ────────────────────────────────────────────────────────
  *
@@ -226,10 +242,11 @@
 /* Header shrinks (~9 px) + board padding halves (8 → 4 px each side, -8 px) */
 @media (max-height: 620px) {
   :root { --tile-overhead: 347px; }
-  .app-header   { padding: 6px 0 4px; }
+  .app-header    { padding: 6px 0 4px; }
   .app-header h1 { font-size: 1.4rem; }
-  .board-area   { padding: 4px 0; }
+  .board-area    { padding: 4px 0; }
 }
+
 /* ── Lobby screen ── */
 .lobby {
   flex: 1;
@@ -251,7 +268,7 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #d3d6da;
+  background: var(--border-empty);
   animation: lobby-pulse 1.2s ease-in-out infinite;
 }
 
@@ -259,21 +276,21 @@
 .lobby-dots span:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes lobby-pulse {
-  0%, 80%, 100% { background: #d3d6da; transform: scale(1); }
-  40%            { background: #878a8c; transform: scale(1.3); }
+  0%, 80%, 100% { background: var(--border-empty);  transform: scale(1); }
+  40%            { background: var(--border-filled); transform: scale(1.3); }
 }
 
 .lobby-message {
   font-size: 1.05rem;
   font-weight: 700;
   letter-spacing: 0.03em;
-  color: #1a1a1b;
+  color: var(--text);
   margin: 0;
 }
 
 .lobby-hint {
   font-size: 0.8rem;
-  color: #787c7e;
+  color: var(--muted);
   margin: 0;
 }
 
@@ -283,7 +300,7 @@
   padding: 10px 28px;
   border-radius: 4px;
   border: none;
-  background: #6aaa64;
+  background: var(--correct);
   color: #fff;
   font-size: 0.9rem;
   font-weight: 700;
@@ -295,10 +312,7 @@
 }
 
 .share-btn:active { transform: scale(0.96); }
-
-.share-btn:hover {
-  background: #538d4e;
-}
+.share-btn:hover  { filter: brightness(0.9); }
 
 /* ── Grid wrapper (needed for the waiting overlay) ── */
 .grid-wrapper {
@@ -307,7 +321,7 @@
 
 /* Pending tile: letters locked in, no colour yet */
 .tile.pending {
-  border-color: #878a8c;
+  border-color: var(--border-filled);
 }
 
 /* Waiting overlay: frosted glass over the grid */
@@ -317,7 +331,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.82);
+  background: var(--overlay-bg);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
   border-radius: 4px;
@@ -329,12 +343,12 @@
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #1a1a1b;
+  color: var(--text);
 }
 
 /* Partner pending dot: submitted but not yet revealed */
 .partner-tile.pending {
-  background: #878a8c;
+  background: var(--border-filled);
   opacity: 0.35;
 }
 
@@ -348,7 +362,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #787c7e;
+  color: var(--muted);
   margin: 0 0 4px;
 }
 
@@ -368,9 +382,9 @@
   width: 12px;
   height: 12px;
   border-radius: 2px;
-  background: #d3d6da;
+  background: var(--border-empty);
 }
 
-.partner-tile.correct { background: #6aaa64; }
-.partner-tile.present { background: #c9b458; }
-.partner-tile.absent  { background: #787c7e; }
+.partner-tile.correct { background: var(--correct); }
+.partner-tile.present { background: var(--present); }
+.partner-tile.absent  { background: var(--absent);  }
