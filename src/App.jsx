@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { getWordOfDay, getTodayString } from './useWordOfDay';
 import { useFirebaseSync } from './useFirebaseSync';
+import { isValidWord } from './wordList';
 import Keyboard from './Keyboard';
 import './App.css';
 
@@ -123,8 +124,9 @@ export default function App() {
     useFirebaseSync();
 
   // currentGuess is purely local — only this player types it
-  const [currentGuess, setCurrentGuess] = useState('');
-  const [copied,       setCopied]       = useState(false);
+  const [currentGuess,  setCurrentGuess]  = useState('');
+  const [copied,        setCopied]        = useState(false);
+  const [invalidGuess,  setInvalidGuess]  = useState(false);
 
   // Fallback state for the no-?user= local-only mode
   const [localGuesses,  setLocalGuesses]  = useState([]);
@@ -140,7 +142,7 @@ export default function App() {
     ? myData.status === 'finished' && myData.revealedTurns >= myData.guesses.length
     : localGameOver;
 
-  const inputBlocked = isWaiting || gameOver;
+  const inputBlocked = isWaiting || gameOver || invalidGuess;
 
   const partnerName = partner
     ? partner.charAt(0).toUpperCase() + partner.slice(1)
@@ -175,6 +177,15 @@ export default function App() {
   // ── Guess submission ─────────────────────────────────────────────────────────
   const submitGuess = useCallback(() => {
     if (currentGuess.length !== WORD_LENGTH || inputBlocked) return;
+
+    if (!isValidWord(currentGuess)) {
+      setInvalidGuess(true);
+      setTimeout(() => {
+        setInvalidGuess(false);
+        setCurrentGuess('');
+      }, 600);
+      return;
+    }
 
     const newGuesses = [...guesses, currentGuess];
 
@@ -286,6 +297,8 @@ export default function App() {
       )}
 
       <div className="board-area">
+        {invalidGuess && <p className="message invalid">Not in word list.</p>}
+
         {gameOver && (
           <p className="message">
             {won
@@ -297,7 +310,13 @@ export default function App() {
         <div className="grid-wrapper">
           <div className="grid">
             {rows.map((row, rowIdx) => (
-              <div key={rowIdx} className="row">
+              <div
+                key={rowIdx}
+                className={[
+                  'row',
+                  row.state === 'active' && invalidGuess ? 'shake' : '',
+                ].filter(Boolean).join(' ')}
+              >
                 {row.letters.map((letter, colIdx) => (
                   <div
                     key={colIdx}

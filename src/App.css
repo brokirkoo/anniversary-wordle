@@ -103,6 +103,19 @@
   color: #fff;
 }
 
+/* ── Row shake (invalid word) ── */
+@keyframes shake {
+  0%        { transform: translateX(0); }
+  15%       { transform: translateX(-6px); }
+  35%       { transform: translateX(6px); }
+  55%       { transform: translateX(-4px); }
+  75%       { transform: translateX(4px); }
+  90%       { transform: translateX(-2px); }
+  100%      { transform: translateX(0); }
+}
+
+.row.shake { animation: shake 0.55s ease-in-out; }
+
 /* ── End-of-game message (toast style) ── */
 .message {
   font-size: 0.85rem;
@@ -115,9 +128,8 @@
   border-radius: 4px;
 }
 
-.message.error {
-  background: #c62828;
-}
+.message.error   { background: #c62828; }
+.message.invalid { background: #1a1a1b; }
 
 /* ── Keyboard ── */
 .keyboard {
